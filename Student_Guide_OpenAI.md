@@ -52,4 +52,8 @@ All other lab steps (Step 5 through Step 8) remain unchanged.
 - **Do not push `secrets.yaml` to any public GitHub repository** — this would expose the shared API key and compromise it for the entire class
 - **Do not share this file** outside of this class
 - The shared API key has **rate limits** — if you get a `429` error, wait a moment and try again
-- The key will be revoked after the lab deadline
+- The key will be **automatically revoked on April 2, 2026 at 11:59 PM** (same as the lab due date)
+
+> **⚠️ Be Mindful of AI API Usage**
+>
+> The AI API key is **shared with the entire class**. Please use the AI service only to test your application and verify that the AI feature (product description and image generation) works correctly. Once you have confirmed it is working, **do not continue making unnecessary requests**. Excessive usage consumes the shared credit and may cause the API to become unavailable for your classmates. Be considerate and keep your testing to a minimum.
