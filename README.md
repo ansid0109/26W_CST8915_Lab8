@@ -8,7 +8,7 @@
 ---
 ## Demo Video
 
-🎥 [Watch Demo Video]()
+🎥 [Watch Demo Video](https://youtu.be/tv4NRhJ_J_Q)
 
 ---
 ## Technical Explanation of Task 2
