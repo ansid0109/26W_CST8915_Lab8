@@ -5,7 +5,7 @@ metadata:
   name: mongodb
 spec:
   serviceName: mongodb # Associated headless service for DNS resolution
-  replicas: 1 # Number of MongoDB replicas
+  replicas: 3 # Number of MongoDB replicas
   selector:
     matchLabels:
       app: mongodb # Labels to match for this StatefulSet
@@ -22,6 +22,9 @@ spec:
           ports:
             - containerPort: 27017 # Default MongoDB port
               name: mongodb
+          volumeMounts:
+            - name: mongodb-data
+              mountPath: /data/db
           resources: # Resource requests and limits for MongoDB
             requests:
               cpu: 5m # Minimum CPU
@@ -37,6 +40,15 @@ spec:
                 - db.runCommand('ping').ok
             initialDelaySeconds: 5 # Wait time before starting probe
             periodSeconds: 5 # Interval between probes
+  volumeClaimTemplates:
+    - metadata:
+        name: mongodb-data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 8Gi
 ---
 # Service to expose MongoDB
 apiVersion: v1
@@ -44,6 +56,7 @@ kind: Service
 metadata:
   name: mongodb
 spec:
+  clusterIP: None
   ports:
     - port: 27017 # MongoDB service port
   selector:
@@ -92,6 +105,8 @@ spec:
             - name: rabbitmq-enabled-plugins
               mountPath: /etc/rabbitmq/enabled_plugins
               subPath: enabled_plugins
+            - name: rabbitmq-data
+              mountPath: /var/lib/rabbitmq
       volumes:
         - name: rabbitmq-enabled-plugins
           configMap:
@@ -99,6 +114,15 @@ spec:
             items:
               - key: rabbitmq_enabled_plugins
                 path: enabled_plugins
+  volumeClaimTemplates:
+    - metadata:
+        name: rabbitmq-data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 8Gi
 ---
 # Service for RabbitMQ
 apiVersion: v1
@@ -106,6 +130,7 @@ kind: Service
 metadata:
   name: rabbitmq
 spec:
+  clusterIP: None
   selector:
     app: rabbitmq
   ports:
